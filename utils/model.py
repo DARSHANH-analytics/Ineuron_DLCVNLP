@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+import logging as logging
 
 class perceptron:
     def __init__(self,lr,epochs):

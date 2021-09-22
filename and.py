@@ -1,7 +1,7 @@
 from utils.model import perceptron
 from utils.all_utils import prepare_data, save_model,save_plot
 import pandas as pd
-import logging
+import logging as logging
 import os
 
 logging_str = "[%(asctime)s: %(levelname)s: %(module)s] %(message)s"
