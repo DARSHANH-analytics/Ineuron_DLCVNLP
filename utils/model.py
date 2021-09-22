@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 
 class perceptron:
     def __init__(self,lr,epochs):
@@ -9,31 +10,31 @@ class perceptron:
     def fit(self,x,y):
         self.x = x
         self.y = y
-        print('------inputs---------')
-        print(self.x)
+        logging.info('------inputs---------')
+        logging.info(self.x)
         #x_with_bias = np.concatenate([self.x,-np.ones((self.x.shape[0],1))],axis=1)
         #x_with_bias = pd.concat([self.x,pd.Series(-np.ones(self.x.shape[0]))],axis=1)
         x_with_bias = pd.concat([self.x,pd.Series(-np.ones(len(self.x)))],axis=1)
-        print('------x_with_bias---------')  
-        print(x_with_bias)
+        logging.info('------x_with_bias---------')  
+        logging.info(x_with_bias)
         self.weights = np.random.randn(x_with_bias.shape[1])
-        print('------weights---------')
-        print(self.weights)
-        for e in range(self.epochs):
+        logging.info('------weights---------')
+        logging.info(self.weights)
+        for e in tqdm(range(self.epochs), total=self.epochs, desc="training the model"):
             z = np.dot(x_with_bias,self.weights)
             y_pred = np.where(z>0,1,0)
-            print('------y_pred---------')   
-            print(y_pred)
+            logging.info('------y_pred---------')   
+            logging.info(y_pred)
             self.y_error = self.y - y_pred
-            print('------y_error---------')
-            print(self.y_error)
-            print('------x_with_bias.T---------Transforming to match the error matrix since column of first matrix to match \
+            logging.info('------y_error---------')
+            logging.info(self.y_error)
+            logging.info('------x_with_bias.T---------Transforming to match the error matrix since column of first matrix to match \
 the row of second matrix')
             if min(self.y_error) == 0 and max(self.y_error) == 0 :
                 break;
-            print(x_with_bias.T)            
+            logging.info(x_with_bias.T)            
             self.weights = self.weights + self.lr * np.dot(x_with_bias.T,self.y_error)
-            print(f"updated weights after epoch:\n{e} : \n{self.weights}")            
+            logging.info(f"updated weights after epoch:\n{e} : \n{self.weights}")            
     
     def predict(self,x):
         x_with_bias = np.concatenate([x,-np.ones((len(x),1))],axis=1)
@@ -42,5 +43,5 @@ the row of second matrix')
     
     def total_loss(self):
         total_loss = np.sum(self.y_error)
-        print(f"total loss: {total_loss}")
+        logging.info(f"total loss: {total_loss}")
         return total_loss
